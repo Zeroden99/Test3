@@ -16,15 +16,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.w3c.dom.Text;
-import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText UserEmail, UserPassword, UserConfirmPassword;
     private FirebaseAuth mAuth;
     private ProgressDialog loadingBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +46,13 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if (currentUser != null)
+        if (currentUser == null)
         {
             SendUserToMainActivity();
         }
@@ -64,6 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(mainIntent);
         finish();
     }
+
     private void CreateNewAccount()
     {
         String email = UserEmail.getText().toString();
