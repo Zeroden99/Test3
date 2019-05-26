@@ -18,11 +18,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText UserEmail, UserPassword, UserConfirmPassword;
     private FirebaseAuth mAuth;
     private ProgressDialog loadingBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,23 @@ public class RegisterActivity extends AppCompatActivity {
                 CreateNewAccount();
             }
         });
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null)
+        {
+            SendUserToMainActivity();
+        }
+    }
+    private void SendUserToMainActivity()
+    {
+        Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
     }
     private void CreateNewAccount()
     {
