@@ -1,6 +1,7 @@
 package com.example.test3;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import org.w3c.dom.Text;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText UserEmail, UserPassword, UserConfirmPassword;
-    private Button CreateAccountButton;
     private FirebaseAuth mAuth;
     private ProgressDialog loadingBar;
 
@@ -34,11 +34,11 @@ public class RegisterActivity extends AppCompatActivity {
         UserEmail = (EditText) findViewById(R.id.register_email);
         UserPassword = (EditText) findViewById(R.id.register_password);
         UserConfirmPassword = (EditText) findViewById(R.id.register_confirm_password);
-        CreateAccountButton = (Button) findViewById(R.id.register_create_account);
+        Button createAccountButton = (Button) findViewById(R.id.register_create_account);
         loadingBar = new ProgressDialog(this);
 
 
-        CreateAccountButton.setOnClickListener(new View.OnClickListener() {
+        createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CreateNewAccount();
@@ -63,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
         {
             Toast.makeText(this,"Please write your confirm password", Toast.LENGTH_SHORT).show();
         }
-       else if (password.equals(confirmPassword)){
+       else if (!password.equals(confirmPassword)){
            Toast.makeText(this, "your passwod do not match with your confirm password ", Toast.LENGTH_SHORT).show();
         }
        else
@@ -78,13 +78,15 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful())
                         {
+                            SendUserToSetupActivity();
+
                             Toast.makeText(RegisterActivity.this, "you are authenticated succesfully", Toast.LENGTH_SHORT).show();
                             loadingBar.dismiss();
                         }
                         else {
                             String message = task.getException().getMessage();
 
-                                Toast.makeText(RegisterActivity.this, "Error Ocured"+message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Error Ocured" +message, Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
 
                             }
@@ -93,6 +95,16 @@ public class RegisterActivity extends AppCompatActivity {
 
            }
     }
+
+    private void SendUserToSetupActivity()
+    {
+        Intent setupIntent = new Intent(RegisterActivity.this, SetupActivity.class);
+        setupIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(setupIntent);
+        finish();
+    }
+
+
 
 }
 

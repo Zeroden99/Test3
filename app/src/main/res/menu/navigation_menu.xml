@@ -3,16 +3,25 @@
 
     <item
     android:id="@+id/nav_home"
-    android:title="Home"/>
+    android:title="Profile"
+        android:icon="@drawable/profile"
+        />
 
     <item
-        android:id="@+id/nav_friends"
-        android:title="Friends"/>
+        android:id="@+id/nav_post"
+        android:title="Загублені речі"
+        android:icon="@drawable/add_post"
+        />
 
     <item
-        android:id="@+id/nav_find_friend"
-        android:title="Find Friens"/>
+        android:id="@+id/nav_user_post"
+        android:title="Знайдені речі"
+        android:icon="@drawable/add_post_high"/>
 
+    <item
+        android:id="@+id/nav_logout"
+        android:title="Logout"
+        android:icon="@drawable/logout"/>
 
 
 </menu>
