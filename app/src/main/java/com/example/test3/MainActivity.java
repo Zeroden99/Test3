@@ -8,6 +8,8 @@ import android.widget.AdapterView;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseAuth;
 
+import static com.example.test3.R.layout.activity_main;
+
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
