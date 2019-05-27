@@ -61,13 +61,14 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="407dp"
         android:layout_marginRight="10dp"
+        android:autoText="false"
         android:background="@drawable/inputs"
         android:ems="10"
         android:gravity="start|top"
         android:hint="Years"
         android:inputType="textMultiLine"
         android:padding="12dp"
-        android:textColor="#00FF0000"
+        android:textColor="#F2000000"
         android:textColorHint="#F80202" />
 
     <EditText

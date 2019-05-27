@@ -2,7 +2,10 @@ package com.example.test3;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,8 +18,14 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
@@ -25,19 +34,19 @@ public class SetupActivity extends AppCompatActivity
     private EditText UserName, FullName, Years, PhoneNumber;
     private DatabaseReference userRef;
     private ProgressDialog loadingBar;
-
+    private StorageReference UserProfileImageRef;
     String  currentUserId;
+    final static int Gallery_Pick = 1;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
-
+        UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("profile images");
         UserName = (EditText) findViewById(R.id.setup_username);
         FullName = (EditText) findViewById(R.id.setup_full_name);
         Years = (EditText) findViewById(R.id.setup_years);
@@ -52,7 +61,9 @@ public class SetupActivity extends AppCompatActivity
                 SaveAccountInformation();
             }
         });
+
     }
+
 
     private void SaveAccountInformation()
     {

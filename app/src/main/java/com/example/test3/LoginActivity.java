@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText UserEmail, UserPassword;
     private FirebaseAuth mAuth;
     private ProgressDialog loadingBar;
+    private ImageView googleSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         UserEmail = (EditText) findViewById(R.id.login_email);
         UserPassword = (EditText) findViewById(R.id.login_password);
         Button loginButton = (Button) findViewById(R.id.login_button);
+        googleSignInButton=(ImageView) findViewById(R.id.google_sigin_button);
         loadingBar = new ProgressDialog(this);
 
         mAuth = FirebaseAuth.getInstance();
@@ -49,6 +52,8 @@ public class LoginActivity extends AppCompatActivity {
              AllowingUserToLogin();
             }
         });
+
+
     }
 
     @Override

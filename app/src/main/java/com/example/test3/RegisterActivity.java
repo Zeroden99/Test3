@@ -52,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if (currentUser == null)
+        if (currentUser != null)
         {
             SendUserToMainActivity();
         }
