@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +36,10 @@ public class SetupActivity extends AppCompatActivity
     private DatabaseReference userRef;
     private ProgressDialog loadingBar;
     private StorageReference UserProfileImageRef;
+    private Button saveInformationbutton;
+    private FirebaseAuth mAuth;
+
+
     String  currentUserId;
     final static int Gallery_Pick = 1;
 
@@ -42,8 +47,8 @@ public class SetupActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
-
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        userRef=FirebaseDatabase.getInstance().getReference().child("Users");
+        mAuth = FirebaseAuth.getInstance();
         currentUserId = mAuth.getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
         UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("profile images");
@@ -51,7 +56,7 @@ public class SetupActivity extends AppCompatActivity
         FullName = (EditText) findViewById(R.id.setup_full_name);
         Years = (EditText) findViewById(R.id.setup_years);
         PhoneNumber = (EditText) findViewById(R.id.setup_phone_number);
-        Button saveInformationbutton = (Button) findViewById(R.id.setup_information_button);
+        saveInformationbutton = (Button) findViewById(R.id.setup_information_button);
         ImageView profileImage = (ImageView) findViewById(R.id.setup_profile_image);
 
         saveInformationbutton.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +70,7 @@ public class SetupActivity extends AppCompatActivity
     }
 
 
+
     private void SaveAccountInformation()
     {
         String username = UserName.getText().toString();
@@ -76,26 +82,25 @@ public class SetupActivity extends AppCompatActivity
         {
             Toast.makeText(this, "Write your username", Toast.LENGTH_SHORT).show();
         }
-        if (TextUtils.isEmpty(fullname))
+     else   if (TextUtils.isEmpty(fullname))
         {
             Toast.makeText(this, "Write your fullname", Toast.LENGTH_SHORT).show();
         }
-        if (TextUtils.isEmpty(years))
+       else if (TextUtils.isEmpty(years))
         {
             Toast.makeText(this, "Write your years old", Toast.LENGTH_SHORT).show();
         }
-        if (TextUtils.isEmpty(phonenumber))
+       else if (TextUtils.isEmpty(phonenumber))
         {
             Toast.makeText(this, "Write your phone number", Toast.LENGTH_SHORT).show();
         }
+
         else
 
             {
-                loadingBar.setTitle("Saving information");
-                loadingBar.setMessage("Please wait, while we are creating your new Account");
-                loadingBar.show();
-                loadingBar.setCanceledOnTouchOutside(true);
+
                 HashMap userMap = new HashMap();
+                userMap.put("Id", currentUserId);
                 userMap.put("Username", username);
                 userMap.put("Fullname", fullname);
                 userMap.put("Years", years);
@@ -107,14 +112,14 @@ public class SetupActivity extends AppCompatActivity
                      if (task.isSuccessful( ))
                      {
                          SendUserToMainActivity();
-                         Toast.makeText(SetupActivity.this, "Your Account is created Sucesfully", Toast.LENGTH_LONG).show();
-                         loadingBar.dismiss();
+                         Toast.makeText(SetupActivity.this, "Your Account is created Sucesfully", Toast.LENGTH_SHORT).show();
+
                      }
                      else
                      {
                         String message=task.getException().getMessage();
                         Toast.makeText(SetupActivity.this, "Erorr Ocured: "+message, Toast.LENGTH_SHORT).show();
-                        loadingBar.dismiss();
+
                      }
 
                     }
